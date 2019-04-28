@@ -1,3 +1,12 @@
+This project is still a work in progress. At this time it will...
+
+1. Add music to the mariadb database, but the path must be changed in addartists.py. Username and password must also be changed in databasefuncs.py. Once this is done, run the addartists python file and it will create the database, add artists, albums, and songs. The directory structure for the music must be artist - album - songs. It will also create 3 text files, Artists.txt, Albums.txt, and songs.txt. These can be used to imprt slots into snips intents.
+
+2. Play songs by voice
+
+That's it at the moment, but working on more functionality - 4/27/19
+
+
 ## snips-app-template-py
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/snipsco/snips-app-template-py/blob/master/LICENSE)
 
