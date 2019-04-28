@@ -7,6 +7,8 @@ from hermes_python.ontology import *
 import io
 import databasefuncs as dbfunks
 import vlc
+import time
+import os
 
 CONFIG_INI = "config.ini"
 
@@ -16,6 +18,10 @@ CONFIG_INI = "config.ini"
 MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
+
+instance = vlc.Instance('--aout=alsa')
+p = instance.media_player_new()
+
 
 class Template(object):
     """Class used to wrap action code with mqtt connection
@@ -45,28 +51,36 @@ class Template(object):
         # if need to speak the execution result by tts
         ## hermes.publish_start_session_notification(intent_message.site_id, songname[0].raw_value, "")
         #hermes.publish_start_session_notification(intent_message.site_id, "Action1 has been done", "")
+
         try:
             dbfunks.dbConnect()
-            song = dbfunks.getSong('war pigs')
+            song = dbfunks.getSong(snipssongname[0].raw_value)
             songPath = song[1]
             print("song is " + song[1])
-            #songPath = 'Music/Beck/Loser.mp3'
-            #songPath = 'file:////var/lib/snips/skills/snipsmusicplayer/Loser.mp3'
-            instance = vlc.Instance('--aout=alsa')
-            #instance = vlc.Instance() 
-            p = instance.media_player_new()
+            #instance = vlc.Instance('--aout=alsa')
+            #p = instance.media_player_new()
             m = instance.media_new_path(songPath)
             p.set_media(m)
             p.play()
             print(p.get_state())
-            while True:
-                 pass
-            #p.pause()
+            print(p.get_length())
+            time.sleep(1.5)
+            duration = p.get_length() / 1000
+            time.sleep(duration)
             vlc.libvlc_audio_set_volume(p, 0)  # volume 0..100
+            print(p.get_state())
+            vlcstate = p.get_state()
+            print("VLC released")
+            quit()
+            hermes.publish_start_session_notification(intent_message.site_id,"Song Finished", "")
+
         except Exception as e:
-           # hermes.publish_start_session_notification(intent_message.site_id, snipssongname[0].raw_value, "") 
+            hermes.publish_start_session_notification(intent_message.site_id, snipssongname[0].raw_value, "")
             #hermes.publish_start_session_notification(intent_message.site_id, e, "")
-           print("Error: " + str(e))
+            print("Error: " + str(e))
+
+        finally:
+            hermes.publish_start_session_notification(intent_message.site_id,"Action finished",  "")
 
     def intent_2_callback(self, hermes, intent_message):
         # terminate the session first if not continue
