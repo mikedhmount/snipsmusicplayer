@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+#test
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
 from hermes_python.ontology import *
@@ -38,6 +38,10 @@ class Template(object):
 
         # start listening to MQTT
         self.start_blocking()
+
+
+###             Play Song
+
 
     # --> Sub callback function, one per intent
     def intent_1_callback(self, hermes, intent_message):
@@ -82,6 +86,11 @@ class Template(object):
         finally:
             hermes.publish_start_session_notification(intent_message.site_id,"Action finished",  "")
 
+
+
+###         Play Artist
+
+
     def intent_2_callback(self, hermes, intent_message):
         # terminate the session first if not continue
         hermes.publish_end_session(intent_message.session_id, "")
@@ -91,6 +100,12 @@ class Template(object):
 
         # if need to speak the execution result by tts
         hermes.publish_start_session_notification(intent_message.site_id, "Action2 has been done", "")
+
+
+
+
+##          Play Album
+
 
     def intent_3_callback(self, hermes, intent_message):
         # terminate the session first if not continue
@@ -104,6 +119,71 @@ class Template(object):
 
     # More callback function goes here...
 
+
+
+##          Stop song
+
+
+    def intent_4_callback(self, hermes, intent_message):
+        # terminate the session first if not continue
+        hermes.publish_end_session(intent_message.session_id, "")
+
+        # action code goes here...
+        print ('[Received] intent: {}').format(intent_message.intent.intent_name)
+
+        # if need to speak the execution result by tts
+        hermes.publish_start_session_notification(intent_message.site_id, "Action3 has been done", "")
+
+
+
+##              Pause song
+
+
+    def intent_5_callback(self, hermes, intent_message):
+        # terminate the session first if not continue
+        hermes.publish_end_session(intent_message.session_id, "")
+
+        # action code goes here...
+        print ('[Received] intent: {}').format(intent_message.intent.intent_name)
+
+        # if need to speak the execution result by tts
+        hermes.publish_start_session_notification(intent_message.site_id, "Action3 has been done", "")
+
+
+
+
+##      Play playlist
+
+
+    def intent_6_callback(self, hermes, intent_message):
+        # terminate the session first if not continue
+        hermes.publish_end_session(intent_message.session_id, "")
+
+        # action code goes here...
+        print ('[Received] intent: {}').format(intent_message.intent.intent_name)
+
+        # if need to speak the execution result by tts
+        hermes.publish_start_session_notification(intent_message.site_id, "Action3 has been done", "")
+
+
+
+##      Add music
+
+
+    def intent_7_callback(self, hermes, intent_message):
+        # terminate the session first if not continue
+        hermes.publish_end_session(intent_message.session_id, "")
+
+        # action code goes here...
+        print ('[Received] intent: {}').format(intent_message.intent.intent_name)
+
+        # if need to speak the execution result by tts
+        hermes.publish_start_session_notification(intent_message.site_id, "Action3 has been done", "")
+
+
+
+
+
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
         coming_intent = intent_message.intent.intent_name
@@ -113,6 +193,14 @@ class Template(object):
             self.intent_2_callback(hermes, intent_message)
         if coming_intent == 'mike_dh_mount:songAlbums':
             self.intent_3_callback(hermes, intent_message)
+        if coming_intent == 'mike_dh_mount:stopSong':
+            self.intent_4_callback(hermes, intent_message)
+        if coming_intent == 'mike_dh_mount:pauseSong':
+            self.intent_5_callback(hermes, intent_message)
+        if coming_intent == 'mike_dh_mount:playPlaylist':
+            self.intent_6_callback(hermes, intent_message)
+        if coming_intent == 'mike_dh_mount:addMusic':
+            self.intent_7_callback(hermes, intent_message)
 
         # more callback and if condition goes here...
 
