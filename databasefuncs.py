@@ -2,10 +2,12 @@
 import mysql.connector as mariadb
 
 cursor = "" 
+dbuser = "root"
+dbpasswrd = ""
 
 def dbConnect():
     try:
-        mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+        mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
         cursor = mariadb_connection.cursor()
        # deleteDB()
        # createMusicDB()
@@ -14,7 +16,7 @@ def dbConnect():
         print(error)
 
 def createMusicDB():
-    mariadb_connection = mariadb.connect(user='root', password='eaGL3s!')
+    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "')
     cursor = mariadb_connection.cursor()
     try:
         cursor.execute("Create database snips_music")
@@ -42,7 +44,7 @@ def createMusicDB():
 
 def deleteDB():
     try:
-        mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+        mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
         cursor = mariadb_connection.cursor()
         cursor.execute("drop database snips_music")
     except:
@@ -50,7 +52,7 @@ def deleteDB():
 
 def createArtistTable():
     try:
-        mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+        mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
         cursor = mariadb_connection.cursor()
         cursor.execute("create table tblArtists(artistID int(10) not null auto_increment, artistName varchar(50) not null, constraint artist_pk primary key (artistID));")
     except:
@@ -61,7 +63,7 @@ def createArtistTable():
 
 def createAlbumTable():
     try:
-        mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+        mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
         cursor = mariadb_connection.cursor()
         cursor.execute("create table tblAlbums(albumID int(10) not null auto_increment, artistID int(10) not null, albumName varchar(50) not null, constraint album_pk primary key (albumID));")
     except:
@@ -73,7 +75,7 @@ def createAlbumTable():
 
 def createSongTable():
     try:
-        mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+        mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
         cursor = mariadb_connection.cursor()
         cursor.execute("create table tblSongs(songID int(10) not null auto_increment, albumID int(10) not null, songName varchar(50) not null, songPath varchar(300), constraint song_pk primary key (songID));")
     except:
@@ -83,14 +85,14 @@ def createSongTable():
         mariadb_connection.close()
 
 def getArtist(artist_Name):
-    mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
     cursor = mariadb_connection.cursor()
     cursor.execute("select ArtistName from tblArtists where artistName=%s", (artist_Name,))
     for artistName in cursor:
         print("Artist Name: {}").format(artistName)
 
 def getAlbum(album_Name):
-    mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
     cursor = mariadb_connection.cursor()
     cursor.execute("select albumName from tblAlbums where albumName=%s", (album_Name,))
     for albumName in cursor:
@@ -100,7 +102,7 @@ def getSong(song_Name):
     songrslt = ""
     songname = ""
     songpath = ""
-    mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
     cursor = mariadb_connection.cursor()
 #    sqlQuery = """select songName, songPath from tblSongs where songName = %s"""
     cursor.execute("select songName, songPath from tblSongs where songName=%s", (song_Name,))
@@ -115,7 +117,7 @@ def getSong(song_Name):
     return songrslt
 
 def insertArtist(artist_Name):
-    mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
     cursor = mariadb_connection.cursor()
     sql = "Insert into tblArtists (artistName) values (%s)"
     #val = (artist_Name)
@@ -126,7 +128,7 @@ def insertArtist(artist_Name):
     return lastID
 
 def insertAlbum(artist_id, album_Name):
-    mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
     cursor = mariadb_connection.cursor()
     sql = "Insert into tblAlbums (artistID, albumName) values (%s,%s)"
     val = (artist_id, album_Name)
@@ -136,7 +138,7 @@ def insertAlbum(artist_id, album_Name):
     return lastalbumId
 
 def insertSong(album_id, song_Name, song_Path):
-    mariadb_connection = mariadb.connect(user='root', password='eaGL3s!', database='snips_music')
+    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
     cursor = mariadb_connection.cursor()
     cursor.execute("Insert into tblSongs (albumID, songName, songPath) values (%s,%s, %s)", (album_id, song_Name, song_Path))
     mariadb_connection.commit()
