@@ -65,6 +65,7 @@ class Template(object):
             #p = instance.media_player_new()
             m = instance.media_new_path(songPath)
             p.set_media(m)
+            hermes.publish_continue_session(intent_message.site_id," ", "")
             p.play()
             print(p.get_state())
             print(p.get_length())
@@ -76,7 +77,7 @@ class Template(object):
             vlcstate = p.get_state()
             print("VLC released")
             quit()
-            hermes.publish_start_session_notification(intent_message.site_id,"Song Finished", "")
+            #hermes.publish_start_session_notification(intent_message.site_id," ", "")
 
         except Exception as e:
             hermes.publish_start_session_notification(intent_message.site_id, snipssongname[0].raw_value, "")
@@ -130,7 +131,8 @@ class Template(object):
 
         # action code goes here...
         print ('[Received] intent: {}').format(intent_message.intent.intent_name)
-
+        p.stop()
+        quit()
         # if need to speak the execution result by tts
         hermes.publish_start_session_notification(intent_message.site_id, "Action3 has been done", "")
 

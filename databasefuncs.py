@@ -2,6 +2,8 @@
 import mysql.connector as mariadb
 
 cursor = "" 
+dbuser = "root"
+dbpasswrd = "eaGL3s!"
 
 def dbConnect():
     try:
