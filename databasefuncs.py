@@ -3,11 +3,8 @@ import mysql.connector as mariadb
 
 cursor = "" 
 dbuser = "root"
-<<<<<<< HEAD
 dbpasswrd = "eaGL3s!"
-=======
-dbpasswrd = ""
->>>>>>> 2b6483005b8e7471d8930c16733b81e5f487d50c
+
 
 def dbConnect():
     try:

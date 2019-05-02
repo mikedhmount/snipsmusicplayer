@@ -50,5 +50,5 @@ def action_wrapper(hermes, intentMessage, conf):
 if __name__ == "__main__":
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intent("mike_dh_mount:Reboot_Pi", subscribe_intent_callback) \
+        h.subscribe_intent("mike_dh_mount:playMeASong", subscribe_intent_callback) \
          .start()
