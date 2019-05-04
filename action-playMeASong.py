@@ -36,16 +36,21 @@ def subscribe_intent_callback(hermes, intentMessage):
 
 def action_wrapper(hermes, intentMessage, conf):
      try:
+        snipssongname = intentMessage.slots.songName
         dbfunks.dbConnect()
         song = dbfunks.getSong(snipssongname[0].raw_value)
         songPath = song[1]
         print("song is " + song[1])
-        xmmsfuncs.clearSongs()
+        isPlaying = xmmsfuncs.getCurrent()
+        #print(isPlaying)
+        if isPlaying[0] == 'Stopped':
+            xmmsfuncs.clearSongs()
+    
         xmmsfuncs.addSong(songPath)
         xmmsfuncs.playSong()
 
-     except:
-        print("Error")
+     except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     mqtt_opts = MqttOptions()

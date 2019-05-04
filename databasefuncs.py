@@ -1,14 +1,16 @@
 #!/usr/bin/python3
 import mysql.connector as mariadb
+from mysql_dbconfig import read_db_config
 
 cursor = "" 
-dbuser = "root"
-dbpasswrd = "eaGL3s!"
-
+# dbuser = "root"
+# dbpasswrd = "eaGL3s!"
+db_config = read_db_config()
 
 def dbConnect():
     try:
-        mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
+        mariadb_connection = mariadb.connect(**db_config)
+        #mariadb_connection = mariadb.connect(user='" + *dbuser + "', password='" + *dbpasswrd + "', database='snips_music')
         cursor = mariadb_connection.cursor()
        # deleteDB()
        # createMusicDB()
@@ -17,7 +19,8 @@ def dbConnect():
         print(error)
 
 def createMusicDB():
-    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "')
+    mariadb_connection = mariadb.connect(**db_config)
+    #mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "')
     cursor = mariadb_connection.cursor()
     try:
         cursor.execute("Create database snips_music")
@@ -45,7 +48,8 @@ def createMusicDB():
 
 def deleteDB():
     try:
-        mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
+        mariadb_connection = mariadb.connect(**db_config)
+        #mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
         cursor = mariadb_connection.cursor()
         cursor.execute("drop database snips_music")
     except:
@@ -103,7 +107,8 @@ def getSong(song_Name):
     songrslt = ""
     songname = ""
     songpath = ""
-    mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
+    mariadb_connection = mariadb.connect(**db_config)
+    #mariadb_connection = mariadb.connect(user='" + dbuser + "', password='" + dbpasswrd + "', database='snips_music')
     cursor = mariadb_connection.cursor()
 #    sqlQuery = """select songName, songPath from tblSongs where songName = %s"""
     cursor.execute("select songName, songPath from tblSongs where songName=%s", (song_Name,))

@@ -25,7 +25,7 @@ def read_configuration_file(configuration_file):
             return conf_parser.to_dict()
     except (IOError, configparser.Error) as e:
         return dict()
-
+        
 def subscribe_intent_callback(hermes, intentMessage):
     conf = read_configuration_file(CONFIG_INI)
     action_wrapper(hermes, intentMessage, conf)
@@ -34,13 +34,13 @@ def subscribe_intent_callback(hermes, intentMessage):
 
 def action_wrapper(hermes, intentMessage, conf):
      try:
-        xmmsfuncs.stopSong()
+        xmmsfuncs.volumeDown()
 
-     except EXception as e:
-        print("Error stopping: " + e)
+     except Exception as e:
+        print("Error turning down volume: " + e)
 
 if __name__ == "__main__":
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intent("mike_dh_mount:stopSong", subscribe_intent_callback) \
+        h.subscribe_intent("mike_dh_mount:volumeDown", subscribe_intent_callback) \
          .start()

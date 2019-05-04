@@ -30,17 +30,16 @@ def subscribe_intent_callback(hermes, intentMessage):
     conf = read_configuration_file(CONFIG_INI)
     action_wrapper(hermes, intentMessage, conf)
 
-
-
-def action_wrapper(hermes, intentMessage, conf):
      try:
-        xmmsfuncs.stopSong()
+        volume = intentMessage.slots.percentage
+        print(volume[1].raw_value)
 
-     except EXception as e:
-        print("Error stopping: " + e)
+
+     except Exception as e:
+        print("Error pausing: " + e)
 
 if __name__ == "__main__":
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intent("mike_dh_mount:stopSong", subscribe_intent_callback) \
+        h.subscribe_intent("mike_dh_mount:setVolume", subscribe_intent_callback) \
          .start()

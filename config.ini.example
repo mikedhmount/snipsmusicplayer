@@ -7,4 +7,4 @@
 host = localhost
 database = snips_music
 user = root
-password = eaGL3s!
+password = mysql-password
