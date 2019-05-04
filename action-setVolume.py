@@ -30,13 +30,16 @@ def subscribe_intent_callback(hermes, intentMessage):
     conf = read_configuration_file(CONFIG_INI)
     action_wrapper(hermes, intentMessage, conf)
 
-     try:
+
+def action_wrapper(hermes, intentMessage, conf):
+    try:
         volume = intentMessage.slots.percentage
-        print(volume[1].raw_value)
+        print(volume[0].raw_value)
+        xmmsfuncs.setVolume(volume[0].raw_value)
 
 
-     except Exception as e:
-        print("Error pausing: " + e)
+    except Exception as e:
+        print("Error setting volume level: " + e)
 
 if __name__ == "__main__":
     mqtt_opts = MqttOptions()

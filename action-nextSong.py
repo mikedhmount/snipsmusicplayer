@@ -34,13 +34,13 @@ def subscribe_intent_callback(hermes, intentMessage):
 
 def action_wrapper(hermes, intentMessage, conf):
      try:
-        xmmsfuncs.stopSong()
+        xmmsfuncs.nextSong()
 
      except Exception as e:
-        print("Error stopping: " + e)
+        print("Error : " + e)
 
 if __name__ == "__main__":
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intent("mike_dh_mount:stopSong", subscribe_intent_callback) \
+        h.subscribe_intent("mike_dh_mount:nextSong", subscribe_intent_callback) \
          .start()

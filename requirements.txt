@@ -3,7 +3,7 @@ hermes-python>=0.1
 
 # More dependency goes here..
 mysqlclient
-python-vlc>=3.0.6109
 mysql-connector>=2.2.9
 mysql-connector-python>=8.0.15
 mysql-connector-python-rf>=2.2.2
+word2number

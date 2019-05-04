@@ -9,6 +9,8 @@ import io
 import os
 import xmmsfuncs
 
+import databasefuncs as dbfunks
+
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
 
@@ -34,13 +36,32 @@ def subscribe_intent_callback(hermes, intentMessage):
 
 def action_wrapper(hermes, intentMessage, conf):
      try:
-        xmmsfuncs.stopSong()
+        #Get ID of Album
+        Albumname = intentMessage.slots.songAlbums
+        dbfunks.dbConnect()
+        print(Albumname[0].raw_value)
+        song = dbfunks.getAlbumID(Albumname[0].raw_value)
+        
+        isPlaying = xmmsfuncs.getCurrent()
+        if isPlaying[0] == 'Stopped':
+            xmmsfuncs.clearPlaylist()
+
+        #Get all songs via AlbumID
+        songs = dbfunks.getSongbyAlbumID(song)
+        for songpaths in songs:
+            print("Here are your paths")
+            print(songpaths[0])
+            xmmsfuncs.addSong(songpaths[0])
+        xmmsfuncs.sortSongs()
+        xmmsfuncs.listSongs()
+        
+        xmmsfuncs.playSong()
 
      except Exception as e:
-        print("Error stopping: " + e)
+        print(e)
 
 if __name__ == "__main__":
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intent("mike_dh_mount:stopSong", subscribe_intent_callback) \
+        h.subscribe_intent("mike_dh_mount:songAlbums", subscribe_intent_callback) \
          .start()
